@@ -63,4 +63,8 @@ function outputUsers(users) {
     userList.innerHTML = `
     ${users.map(user => `<li>${user.username}</li>`).join('')}
   `;
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> bd0aecbdd706fea54dfaf256089fe9050ec5ec88
