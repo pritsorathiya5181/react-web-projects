@@ -6,36 +6,75 @@ const morgan = require('morgan');
 const http = require('http');
 const socketio = require('socket.io');
 
+const formatMessage = require('./utils/messages');
+const {
+    userJoin,
+    getCurrentUser,
+    userLeave,
+    getRoomUsers
+} = require('./utils/users');
+
 dotenv.config({ path: './config/config.env' });
 
 const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
 
-// set static folder (public folder)
+// Set static folder
 app.use(express.static(path.join(__dirname, 'public')));
 
-//Run when client connects
+const botName = 'ChatCord Bot';
+
+// Run when client connects
 io.on('connection', socket => {
+    socket.on('joinRoom', ({ username, room }) => {
+        const user = userJoin(socket.id, username, room);
 
-    socket.emit('message', 'Welcome to devlopment community chat room!');
-    {/* difference is .emit only show message to user and
-         .broadcast.email is show message to all user expect currentUser */ }
+        socket.join(user.room);
 
-    // Broadcast when user connects
-    socket.broadcast.emit('message', 'A user has joined the chat');
+        // Welcome current user
+        socket.emit('message', formatMessage(botName, 'Welcome to ChatCord!'));
 
-    //Run whens client disconnect
-    socket.on('disconnect', () => {
-        io.emit('message', 'A user has left the chat');
+        // Broadcast when a user connects
+        socket.broadcast
+            .to(user.room)
+            .emit(
+                'message',
+                formatMessage(botName, `${user.username} has joined the chat`)
+            );
+
+        // Send users and room info
+        io.to(user.room).emit('roomUsers', {
+            room: user.room,
+            users: getRoomUsers(user.room)
+        });
     });
 
     // Listen for chatMessage
-    socket.on('chatMessage', (msg) => {
-        // console.log(msg);
-        io.emit('message', msg);
-    })
-})
+    socket.on('chatMessage', msg => {
+        const user = getCurrentUser(socket.id);
+
+        io.to(user.room).emit('message', formatMessage(user.username, msg));
+    });
+
+    // Runs when client disconnects
+    socket.on('disconnect', () => {
+        const user = userLeave(socket.id);
+
+        if (user) {
+            io.to(user.room).emit(
+                'message',
+                formatMessage(botName, `${user.username} has left the chat`)
+            );
+
+            // Send users and room info
+            io.to(user.room).emit('roomUsers', {
+                room: user.room,
+                users: getRoomUsers(user.room)
+            });
+        }
+    });
+});
 
 if (process.env.NODE_ENV == 'development') {
     app.use(morgan('dev'));
