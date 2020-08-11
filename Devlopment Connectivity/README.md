@@ -12,5 +12,5 @@ Go to localhost:3000
 
 ## Demo
 
-![A dmeo of the project](./demo/1.png)
-![A dmeo of the project](./demo/2.png)
+![A dmeo of the project](./demo/1.JPG)
+![A dmeo of the project](./demo/2.JPG)
