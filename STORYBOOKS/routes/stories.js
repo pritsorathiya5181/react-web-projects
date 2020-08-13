@@ -21,4 +21,16 @@ router.post('/', authMid.ensureAuth, (req, res) => {
         })
 })
 
+router.get('/', authMid.ensureAuth, (req, res) => {
+    Story.find({ status: 'public' })
+        .populate('user')
+        .sort({ createdAt: 'desc' })
+        .lean()
+        .then(stories => {
+            res.render('stories/index', {
+                stories: stories
+            })
+        })
+})
+
 module.exports = router;
