@@ -31,8 +31,10 @@ npm start
 - Single Story Page 
 - User Stories 
 
+
 ## Demo
 
+![A demo of the project](./demo/0.JPG)
 ![A demo of the project](./demo/1.JPG)
 ![A demo of the project](./demo/2.JPG)
 ![A demo of the project](./demo/3.JPG)
