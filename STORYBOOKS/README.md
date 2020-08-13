@@ -33,4 +33,6 @@ npm start
 
 ## Demo
 
-![A dmeo of the project](./demo/1.png)
+![A demo of the project](./demo/1.JPG)
+![A demo of the project](./demo/2.JPG)
+![A demo of the project](./demo/3.JPG)
