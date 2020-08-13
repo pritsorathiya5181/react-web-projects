@@ -27,4 +27,8 @@ router.get('/dashboard', authMid.ensureAuth, (req, res) => {
 
 });
 
+router.get('/stories/add', authMid.ensureAuth, (req, res) => {
+    res.render('stories/add');
+})
+
 module.exports = router;
