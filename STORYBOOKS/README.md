@@ -25,7 +25,7 @@ npm start
 - Template Engine & Layouts 
 - Materialize & Font Awesome
 - Passport with a Google OAuth strategy
-- Display Dashboard Stories - 1:14:44
+- Display Dashboard Stories
 - Add New Story and Set Privacy (i.e. public or private)
 - Edit and Delete Stories
 - Single Story Page 
