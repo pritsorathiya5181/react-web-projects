@@ -11,7 +11,6 @@ class Lyrics extends Component {
     }
 
     componentDidMount() {
-        this.setState({ track: {}, lyrics: {} });
         axios  // first fetch lyrics body of selected music
             .get(
                 `http://cors-anywhere.herokuapp.com/http://api.musixmatch.com/ws/1.1/track.lyrics.get?track_id=${this.props.match.params.id}&apikey=46f9cc1588c5bef578864f3dbf55f52f`
@@ -22,7 +21,7 @@ class Lyrics extends Component {
 
                 return axios  // fetch lyrics body of selected music
                     .get(
-                        `http://cors-anywhere.herokuapp.com/http://api.musixmatch.com/ws/1.1/track.get?commontrack_id=5920049=${this.props.match.params.id}&apikey=46f9cc1588c5bef578864f3dbf55f52f`
+                        `http://cors-anywhere.herokuapp.com/http://api.musixmatch.com/ws/1.1/track.get?track_id=${this.props.match.params.id}&apikey=46f9cc1588c5bef578864f3dbf55f52f`
                     );
             })
             .then(res => {
@@ -57,7 +56,8 @@ class Lyrics extends Component {
                             <strong>Album ID</strong>: {track.album_id}
                         </li>
                         <li className="list-group-item">
-                            <strong>Song Genre</strong>: {track.primary_genres.music_genre_list[0].music_genre.music_genre_name}
+                            <strong>Song Genre</strong>: {track.primary_genres.music_genre_list.length > 0 ?
+                                track.primary_genres.music_genre_list[0].music_genre.music_genre_name : "Pop"}
                         </li>
                         <li className="list-group-item">
                             <strong>Explicit Words</strong>: {track.explicit === 0 ? 'No' : 'Yes'}
